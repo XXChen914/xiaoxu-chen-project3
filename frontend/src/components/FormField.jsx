@@ -5,9 +5,11 @@ export default function FormField({
   name,
   placeholder,
   required = true,
+  value,
+  onChange,
 }) {
   return (
-    <>
+    <div className="form-field">
       <label htmlFor={id}>{label}</label>
       <input
         id={id}
@@ -15,7 +17,9 @@ export default function FormField({
         type={type}
         placeholder={placeholder}
         required={required}
+        value={value}
+        onChange={onChange}
       />
-    </>
+    </div>
   );
 }
