@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import path, {dirname} from 'path';
 import userRoutes from './routes/user.routes.js';
+import scoreRoutes from './routes/score.routes.js';
 import sessionRoutes from './routes/session.routes.js';
 
 
@@ -26,7 +27,8 @@ app.use(express.static(frontend_dir));
 
 
 app.use('/api/user', userRoutes);
-app.use('/api/session', sessionRoutes);
+app.use('/api/highscore', scoreRoutes);
+app.use('/api/game', sessionRoutes);
 app.get('*', function (req, res) {
     res.sendFile(path.join(frontend_dir, "index.html"));
 });

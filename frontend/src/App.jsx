@@ -24,7 +24,7 @@ export default function App() {
   }, []);
 
   const handleLogout = async () => {
-    await axios.post("/api/logout", {}, { withCredentials: true });
+    await axios.post("/api/user/logout", {}, { withCredentials: true });
     setUsername(null);
     navigate("/");
   };

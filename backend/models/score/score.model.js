@@ -9,23 +9,21 @@ function findScoreByGameId(gameId) {
 }
 
 // Increment total completions for a game.
-// Use upsert to ensure the score document always exists.
-function incrementCompletions(gameId) {
+function incrementCompletions(gameId, gameName) {
   return ScoreModel.findOneAndUpdate(
     { gameId },
-    { $inc: { totalCompletions: 1 } },
-    {
-      new: true,
-      upsert: true, // create document if it doesn't exist
-      setDefaultsOnInsert: true,
-    }
+    { $inc: { totalCompletions: 1 }, $setOnInsert: { gameName } },
+    { new: true, upsert: true, setDefaultsOnInsert: true }
   ).exec();
 }
 
 // Get games in order by the number of players who have completed it
-// Ignore games with 0 completions
+// Returns game name + completion count
 function getTopScores() {
-  return ScoreModel.find({ totalCompletions: { $gt: 0 } })
+  return ScoreModel.find(
+    { totalCompletions: { $gt: 0 } }, // ignore 0 completions
+    { _id: 0, gameName: 1, totalCompletions: 1 } // projection
+  )
     .sort({ totalCompletions: -1 })
     .exec();
 }

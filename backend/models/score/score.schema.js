@@ -9,6 +9,11 @@ const ScoreSchema = new Schema(
       required: true,
       unique: true,
     },
+    gameName: {
+      type: String,
+      required: true,
+      immutable: true,
+    },
     totalCompletions: {
       type: Number,
       default: 0,
