@@ -11,13 +11,14 @@ app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 
 
-const MONGODB_URL = // INSERT MONGO DB URL HERE
+const MONGODB_URL = process.env.MONGODB_URI || 'mongodb://127.0.0.1/sudoku';
+
 mongoose.connect(MONGODB_URL);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 
 
-const frontend_dir = path.join(path.resolve(), 'dist')
+const frontend_dir = path.join(path.resolve(), '..', 'frontend', 'dist')
 
 app.use(express.static(frontend_dir));
 app.get('*', function (req, res) {
