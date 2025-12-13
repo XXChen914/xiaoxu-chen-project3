@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import path, {dirname} from 'path';
+import userRoutes from './routes/user.routes.js';
+import sessionRoutes from './routes/session.routes.js';
 
 
 const app = express();
@@ -21,6 +23,10 @@ db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 const frontend_dir = path.join(path.resolve(), '..', 'frontend', 'dist')
 
 app.use(express.static(frontend_dir));
+
+
+app.use('/api/user', userRoutes);
+app.use('/api/session', sessionRoutes);
 app.get('*', function (req, res) {
     res.sendFile(path.join(frontend_dir, "index.html"));
 });
