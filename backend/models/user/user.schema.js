@@ -1,17 +1,19 @@
-const Schema = require("mongoose").Schema;
+import { Schema } from "mongoose";
 
-exports.UserSchema = new Schema(
+const UserSchema = new Schema(
   {
     username: {
       type: String,
       unique: true,
-      require: true,
+      required: true,
       index: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
     },
   },
-  { collection: "users" }
+  { collection: "users", timestamps: true }
 );
+
+export default UserSchema;
