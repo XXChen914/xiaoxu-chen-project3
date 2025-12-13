@@ -1,11 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
-import path, {dirname} from 'path';
+import path from 'path';
 import userRoutes from './routes/user.routes.js';
 import scoreRoutes from './routes/score.routes.js';
 import sessionRoutes from './routes/session.routes.js';
-
 
 const app = express();
 

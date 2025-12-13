@@ -16,10 +16,12 @@ async function getHighscores(req, res) {
   }
 }
 
-// POST /api/highscore
+// POST /api/highscore/:gameId
 // Increment total completions for a specific game
+// If the game doesn't exist, create it using gameName from body
 async function updateHighscore(req, res) {
-  const { gameId, gameName } = req.body;
+  const { gameId } = req.params;
+  const { gameName } = req.body;
   if (!gameId || !gameName) {
     return res
       .status(400)

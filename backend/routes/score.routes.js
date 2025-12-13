@@ -8,12 +8,12 @@ import {
 const router = express.Router();
 
 // GET all high scores sorted by completions
-router.get("/highscore", getHighscores);
+router.get("/", getHighscores);
 
 // POST to increment (or create) highscore for a game
-router.post("/highscore", updateHighscore);
+router.post("/:gameId", updateHighscore);
 
 // GET highscore for a specific game by gameId
-router.get("/highscore/:gameId", getHighscoreByGameId);
+router.get("/:gameId", getHighscoreByGameId);
 
 export default router;
