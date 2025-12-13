@@ -1,8 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import SudokuProvider from "./components/SudokuProvider.jsx";
+import RequireAuth from "./components/RequireAuth.jsx";
 import App from "./App.jsx";
+
 import Home from "./pages/Home.jsx";
 import Selection from "./pages/Selection.jsx";
 import SudokuGame from "./pages/SudokuGame.jsx";
@@ -23,23 +26,37 @@ const router = createBrowserRouter([
       },
       {
         path: "games",
-        element: <Selection />,
+        element: (
+          <RequireAuth>
+            <Selection />
+          </RequireAuth>
+        ),
       },
       {
         path: "games/:difficulty",
         element: (
-          <SudokuProvider>
-            <SudokuGame />
-          </SudokuProvider>
+          <RequireAuth>
+            <SudokuProvider>
+              <SudokuGame />
+            </SudokuProvider>
+          </RequireAuth>
         ),
       },
       {
         path: "rules",
-        element: <Rules />,
+        element: (
+          <RequireAuth>
+            <Rules />
+          </RequireAuth>
+        ),
       },
       {
         path: "scores",
-        element: <Scores />,
+        element: (
+          <RequireAuth>
+            <Scores />
+          </RequireAuth>
+        ),
       },
       {
         path: "login",
