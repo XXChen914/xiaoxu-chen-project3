@@ -1,0 +1,19 @@
+.sudoku-board {
+  display: inline-block;
+  border: 1px solid black;
+  background-color: white;
+  width: min(100%, 450px);
+  box-sizing: border-box;
+}
+
+.sudoku-row {
+  display: flex;
+}
+
+.boxBorderRight {
+  border-right: 1px solid #333;
+}
+
+.boxBorderBottom {
+  border-bottom: 1px solid #333;
+}

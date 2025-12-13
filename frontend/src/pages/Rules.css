@@ -1,0 +1,197 @@
+.hero {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.hero h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.hero h3::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #fb6f92, #ff5a82);
+  border-radius: 2px;
+}
+
+.hero h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.hero h4::before {
+  content: "▸ ";
+  color: #fb6f92;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.rules-list {
+  list-style: none;
+  counter-reset: rule-counter;
+  padding-left: 0;
+  margin: 1.5rem 0;
+}
+
+.rules-list li {
+  counter-increment: rule-counter;
+  position: relative;
+  padding-left: 3rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.rules-list li::before {
+  content: counter(rule-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #fb6f92, #ff5a82);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(251, 111, 146, 0.3);
+}
+
+.rules-list li:hover::before {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.small {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+.credits {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(251, 111, 146, 0.05);
+  border-left: 4px solid #fb6f92;
+  border-radius: 8px;
+}
+
+.credits p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.credits strong {
+  color: #fb6f92;
+  font-weight: 600;
+}
+
+.credits a {
+  color: #fb6f92;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.credits a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #fb6f92;
+  transition: width 0.3s ease;
+}
+
+.credits a:hover::after {
+  width: 100%;
+}
+
+.credits a:hover {
+  color: #ff5a82;
+}
+
+.credits a + a::before {
+  content: "•";
+  margin: 0 0.5rem;
+  color: #999;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .hero h3 {
+    font-size: 1.75rem;
+  }
+
+  .hero h4 {
+    font-size: 1.3rem;
+  }
+
+  .rules-list li {
+    padding-left: 2.5rem;
+    font-size: 0.95rem;
+  }
+
+  .rules-list li::before {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 1rem;
+  }
+
+  .hero h3 {
+    font-size: 1.5rem;
+  }
+
+  .hero h4 {
+    font-size: 1.2rem;
+  }
+
+  .rules-list li {
+    padding-left: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .rules-list li::before {
+    width: 24px;
+    height: 24px;
+    font-size: 0.85rem;
+  }
+
+  .credits {
+    padding: 1rem;
+  }
+}

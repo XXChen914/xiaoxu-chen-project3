@@ -1,0 +1,47 @@
+.sudoku-cell {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: #fff;
+  cursor: default; /* base: unselected, possibly fixed */
+  user-select: none;
+  transition: background-color 0.15s, border-color 0.15s;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+.fixed {
+  background-color: #f6f4f4;
+  color: #333;
+}
+
+.editable {
+  color: #47b4ef;
+  cursor: text;
+}
+
+.editable:hover {
+  background-color: #eaf5f8;
+}
+
+.selected {
+  background-color: #cce0ff;
+  border: 1px solid #69aef4;
+  outline: none;
+}
+
+.incorrect {
+  border: 1px solid #f5f0f0;
+  background-color: #cc0000;
+}
+
+.incorrect:hover {
+  background-color: #ffcccc;
+}

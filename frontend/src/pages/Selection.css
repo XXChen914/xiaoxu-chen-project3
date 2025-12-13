@@ -1,0 +1,228 @@
+.selection-page .page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.selection-page .page-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.selection-page .page-header h1::before {
+  font-size: 3rem;
+  margin-right: 0.5rem;
+}
+
+.selection-page .page-header .small {
+  display: block;
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 400;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.game-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.game-item {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, #fb6f92, #ff5a82);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.game-item:hover::before {
+  opacity: 1;
+}
+
+.game-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(251, 111, 146, 0.2);
+}
+
+.game-item::after {
+  content: "▶";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%) translateX(30px);
+  font-size: 1.5rem;
+  color: #fb6f92;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.game-item:hover::after {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+}
+
+.game-item strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.game-item a {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.game-item a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #fb6f92;
+  transition: width 0.3s ease;
+}
+
+.game-item a:hover::after {
+  width: 100%;
+}
+
+.game-item a:hover {
+  color: #fb6f92;
+}
+
+.game-meta {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+.game-meta::before {
+  content: "•";
+  margin-right: 0.25rem;
+  opacity: 0.7;
+}
+
+.game-item > div:last-child {
+  display: flex;
+  align-items: center;
+}
+
+.game-item .small {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+/* Green badge for Easy, Pink for Hard. 
+   The first <li> is Easy, second is Hard. */
+
+.game-item:nth-child(1) .small {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: white;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.game-item:nth-child(2) .small {
+  background: linear-gradient(135deg, #fb6f92, #ff5a82);
+  color: white;
+  box-shadow: 0 2px 8px rgba(251, 111, 146, 0.3);
+}
+
+.game-item:hover .small {
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .selection-page .page-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .selection-page .page-header h1::before {
+    font-size: 2.5rem;
+  }
+
+  .selection-page .page-header .small {
+    font-size: 1rem;
+  }
+
+  .game-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .game-item {
+    padding: 1.25rem;
+  }
+
+  .game-item a {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .selection-page .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .selection-page .page-header h1::before {
+    font-size: 2rem;
+  }
+
+  .game-item {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .game-item > div:last-child {
+    align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+
+  .game-item::after {
+    display: none;
+  }
+}

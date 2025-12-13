@@ -1,0 +1,157 @@
+.sudoku-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 30px;
+  font-family: Arial, sans-serif;
+}
+
+.sudoku-game__header {
+  text-align: center;
+}
+
+.sudoku-game__title {
+  margin: 0 0 4px;
+  color: #333;
+  font-size: clamp(1.6rem, 4vw, 2rem);
+}
+
+.sudoku-game__subtitle {
+  margin: 0 0 10px;
+  color: #666;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+}
+
+.sudoku-game__timer {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #0066cc;
+}
+
+.sudoku-game__congratulations {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #28a745;
+  background-color: #d4edda;
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin: 8px auto 0;
+  animation: sudoku-game-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes sudoku-game-pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.02);
+  }
+}
+
+.sudoku-game__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Number pad */
+.sudoku-game__number-pad {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  max-width: 400px;
+}
+
+.sudoku-game__number-button {
+  width: 45px;
+  height: 45px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: 2px solid #0066cc;
+  background-color: #fff;
+  color: #0066cc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sudoku-game__number-button:hover:not(:disabled) {
+  background-color: #0066cc;
+  color: #fff;
+}
+
+.sudoku-game__number-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sudoku-game__number-button--clear {
+  width: auto;
+  padding: 0 15px;
+  background-color: #f8f8f8;
+  border-color: #999;
+  color: #666;
+}
+
+.sudoku-game__number-button--clear:hover:not(:disabled) {
+  background-color: #999;
+  color: #fff;
+}
+
+/* Controls */
+.sudoku-game__controls {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sudoku-game__control-button {
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: #fff;
+}
+
+.sudoku-game__control-button--new {
+  background-color: #28a745;
+}
+
+.sudoku-game__control-button--new:hover {
+  background-color: #218838;
+}
+
+.sudoku-game__control-button--reset {
+  background-color: #dc3545;
+}
+
+.sudoku-game__control-button--reset:hover {
+  background-color: #c82333;
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+  .sudoku-game {
+    padding: 16px 10px 24px;
+  }
+
+  .sudoku-game__number-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .sudoku-game__control-button {
+    padding: 9px 18px;
+    font-size: 0.95rem;
+  }
+}
