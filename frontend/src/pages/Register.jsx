@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout.jsx";
 import FormField from "../components/FormField.jsx";
@@ -36,26 +37,31 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/user/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: formData.username,
-          password: formData.password,
-          verifyPassword: formData.passwordVerify,
-        }),
-        credentials: "include", // important for cookies
-      });
+      const username = formData.username.trim();
+      const password = formData.password.trim();
+      const verifyPassword = formData.passwordVerify.trim();
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Registration failed");
-      }
+      await axios.post(
+        "/api/user/register",
+        {
+          username,
+          password,
+          verifyPassword,
+        },
+        {
+          withCredentials: true, // important for cookies
+        }
+      );
 
       // Registration successful, redirect to /games
       navigate("/games");
     } catch (err) {
-      setError(err.message);
+      // Axios error handling
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -100,7 +106,7 @@ export default function Register() {
 
         <FormField
           id="reg-password-verify"
-          name="password-verify"
+          name="passwordVerify"
           label="Verify Password"
           placeholder="retype password"
           type="password"
@@ -116,7 +122,8 @@ export default function Register() {
               loading ||
               !formData.username ||
               !formData.password ||
-              !formData.passwordVerify
+              !formData.passwordVerify ||
+              formData.password !== formData.passwordVerify
             }
           >
             {loading ? "Signing up..." : "Sign Up"}
