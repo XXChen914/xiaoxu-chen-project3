@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout.jsx";
 import FormField from "../components/FormField.jsx";
@@ -5,9 +6,59 @@ import FormField from "../components/FormField.jsx";
 export default function Register() {
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    passwordVerify: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Update form state on input change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: add real register logic
+    setError("");
+
+    // Basic validation
+    if (!formData.username || !formData.password || !formData.passwordVerify) {
+      setError("All fields are required.");
+      return;
+    }
+    if (formData.password !== formData.passwordVerify) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/user/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          verifyPassword: formData.passwordVerify,
+        }),
+        credentials: "include", // important for cookies
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Registration failed");
+      }
+
+      // Registration successful, redirect to /games
+      navigate("/games");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const goLogin = () => {
@@ -20,23 +71,21 @@ export default function Register() {
       subtitle={
         <>
           Already have an account?{" "}
-          <button
-            type="button"
-            className="link-btn"
-            onClick={goLogin}
-          >
+          <button type="button" className="link-btn" onClick={goLogin}>
             Log in
           </button>
         </>
       }
     >
-      <form className="form" method="post" action="#" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <FormField
           id="reg-username"
           name="username"
           label="Username"
           placeholder="username"
           type="text"
+          value={formData.username}
+          onChange={handleChange}
         />
 
         <FormField
@@ -45,6 +94,8 @@ export default function Register() {
           label="Password"
           placeholder="password"
           type="password"
+          value={formData.password}
+          onChange={handleChange}
         />
 
         <FormField
@@ -53,11 +104,22 @@ export default function Register() {
           label="Verify Password"
           placeholder="retype password"
           type="password"
+          value={formData.passwordVerify}
+          onChange={handleChange}
         />
-
+        {error && <div className="error-message">{error}</div>}
         <div className="submit-row">
-          <button className="btn" type="submit">
-            Sign Up
+          <button
+            className="btn"
+            type="submit"
+            disabled={
+              loading ||
+              !formData.username ||
+              !formData.password ||
+              !formData.passwordVerify
+            }
+          >
+            {loading ? "Signing up..." : "Sign Up"}
           </button>
         </div>
       </form>
