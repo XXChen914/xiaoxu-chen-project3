@@ -64,10 +64,7 @@ if (words.length < 1000) {
 
 const getRandomWord = () => words[Math.floor(Math.random() * words.length)];
 
-/**
- * Generate a UNIQUE game name consisting of 3 random words
- * Example: "Coconut Red House"
- */
+// Generate a UNIQUE game name consisting of 3 random words
 export default function generateGameName() {
   return `${getRandomWord()} ${getRandomWord()} ${getRandomWord()}`;
 }
