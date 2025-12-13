@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-
-const SessionSchema = require("./session.schema");
+import mongoose from "mongoose";
+import SessionSchema from "./session.schema.js";
 
 const SessionModel = mongoose.model("Session", SessionSchema);
 
@@ -16,15 +15,16 @@ function findSession(userId, gameId) {
 
 // Update current board of a session
 function updateBoard(userId, gameId, currentBoard) {
-  return SessionModel.updateOne(
+  return SessionModel.findOneAndUpdate(
     { userId, gameId },
-    { $set: { currentBoard } }
+    { $set: { currentBoard } },
+    { new: true }
   ).exec();
 }
 
 // Mark session as completed
 function markCompleted(userId, gameId) {
-  return SessionModel.updateOne(
+  return SessionModel.findOneAndUpdate(
     { userId, gameId },
     { $set: { completed: true, completedAt: new Date() } }
   ).exec();
@@ -34,10 +34,4 @@ function isCompleted(userId, gameId) {
   return SessionModel.findOne({ userId, gameId, completed: true }).exec();
 }
 
-module.exports = {
-  createSession,
-  findSession,
-  updateBoard,
-  markCompleted,
-  isCompleted,
-};
+export { createSession, findSession, updateBoard, markCompleted, isCompleted };

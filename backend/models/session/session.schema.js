@@ -17,4 +17,4 @@ const SessionSchema = new Schema(
 // Prevent duplicate completions for the same user & game
 SessionSchema.index({ userId: 1, gameId: 1 }, { unique: true });
 
-export default mongoose.model("Session", SessionSchema);
+export default SessionSchema;
