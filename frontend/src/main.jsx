@@ -45,17 +45,13 @@ const router = createBrowserRouter([
       {
         path: "rules",
         element: (
-          <RequireAuth>
             <Rules />
-          </RequireAuth>
         ),
       },
       {
         path: "scores",
         element: (
-          <RequireAuth>
             <Scores />
-          </RequireAuth>
         ),
       },
       {
