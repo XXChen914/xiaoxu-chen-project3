@@ -1,55 +1,39 @@
 import { Schema } from "mongoose";
+import { Mode } from "../../constants/Mode.js";
 
 const GameSchema = new Schema(
   {
+    // game name
     name: {
       type: String,
       required: true,
       unique: true,
-      index: true,
     },
+    // game mode
     difficulty: {
       type: String,
-      enum: ["EASY", "NORMAL"],
+      enum: [Mode.EASY.difficulty, Mode.NORMAL.difficulty],
       required: true,
     },
-    puzzle: {
+    // record initial puzzle state for resetting
+    initialPuzzle: {
       type: [[Number]], // grid, 0 represents empty cells
       required: true,
+      immutable: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+    // user who created the game
+    creatorId: {
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    },
-    createdByUsername: {
-      type: String,
-      required: true,
-    },
-    completedBy: [
-      {
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        username: String,
-        completedAt: { type: Date, default: Date.now },
-        timeTaken: Number,
-      },
-    ],
-    completionCount: {
-      type: Number,
-      default: 0,
     },
   },
   {
     collection: "games",
+    timestamps: true,
   }
 );
 
-// Index for faster queries
-GameSchema.index({ completionCount: -1 });
 GameSchema.index({ createdAt: -1 });
 
-module.exports = mongoose.model("Game", gameSchema);
+export default GameSchema;
