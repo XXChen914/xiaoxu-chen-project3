@@ -10,4 +10,12 @@ export default defineConfig({
       "#common": path.resolve(__dirname, "../common"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+    },
+  },
 });

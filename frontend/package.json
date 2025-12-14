@@ -1,8 +1,9 @@
 {
-  "name": "xiaoxu-chen-project3-frontend",
+  "name": "frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Backend for Sudoku project",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

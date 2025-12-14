@@ -1,4 +1,4 @@
-import { getModeByDifficulty } from "#common/constants.js";
+import { getModeByDifficulty } from "common/constants.js";
 import { isValid } from "./validator";
 
 export function commonSudokuBuilder(difficulty) {

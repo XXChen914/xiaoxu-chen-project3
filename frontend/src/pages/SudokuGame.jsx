@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { SudokuContext } from "../components/SudokuProvider";
 import SudokuBoard from "../components/SudokuBoard";
-import { Mode, getModeByDifficulty } from "#common/constants.js";
+import { Mode, getModeByDifficulty } from "common/constants.js";
 import "./SudokuGame.css";
 
 export default function SudokuGame() {

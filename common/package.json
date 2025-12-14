@@ -1,0 +1,9 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "constants.js",
+  "description": "Shared constants for frontend and backend",
+  "author": "Lucy Chen"
+}

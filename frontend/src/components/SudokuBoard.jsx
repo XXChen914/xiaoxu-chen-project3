@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { SudokuContext } from "./SudokuProvider";
 import SudokuCell from "./SudokuCell";
-import { getModeByDifficulty } from "#common/constants.js";
+import { getModeByDifficulty } from "common/constants.js";
 import "./SudokuBoard.css";
 
 export default function SudokuBoard() {
