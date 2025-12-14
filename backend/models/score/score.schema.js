@@ -4,7 +4,7 @@ import { Schema } from "mongoose";
 const ScoreSchema = new Schema(
   {
     gameId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Game",
       required: true,
       unique: true,

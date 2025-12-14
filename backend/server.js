@@ -1,10 +1,14 @@
+import "dotenv/config";
 import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import userRoutes from './routes/user.routes.js';
 import scoreRoutes from './routes/score.routes.js';
-import sessionRoutes from './routes/session.routes.js';
+// import sessionRoutes from './routes/session.routes.js';
+
+console.log(process.env.MONGODB_URI);
+console.log(process.env.SUPER_SECRET);
 
 const app = express();
 
@@ -27,7 +31,7 @@ app.use(express.static(frontend_dir));
 
 app.use('/api/user', userRoutes);
 app.use('/api/highscore', scoreRoutes);
-app.use('/api/game', sessionRoutes);
+// app.use('/api/game', sessionRoutes);
 app.get('*', function (req, res) {
     res.sendFile(path.join(frontend_dir, "index.html"));
 });

@@ -2,7 +2,7 @@ import {
   findScoreByGameId,
   incrementCompletions,
   getTopScores,
-} from "../models/score.model.js";
+} from "../models/score/score.model.js";
 
 // GET /api/highscore
 // Returns list of games sorted by total completions

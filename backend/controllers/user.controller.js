@@ -1,4 +1,4 @@
-import { createUser, findUserByUsername } from "../models/user.model.js";
+import { createUser, findUserByUsername } from "../models/user/user.model.js";
 import { decodeUserName } from "../utils/userNameDecoder.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
