@@ -23,3 +23,8 @@ export function getModeByDifficulty(difficulty) {
   if (difficulty === Mode.NORMAL.difficulty) return Mode.NORMAL;
   throw new Error(`Unsupported difficulty: ${difficulty}`);
 }
+
+export const PORT = 8000;
+export const LOCAL_HOST = "http://localhost";
+export const PROXY_TARGET = `${LOCAL_HOST}:${PORT}`;
+export const PROXY_PATH = "/api";

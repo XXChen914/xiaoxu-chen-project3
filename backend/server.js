@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import userRoutes from './routes/user.routes.js';
 import scoreRoutes from './routes/score.routes.js';
+
+import { PORT, LOCAL_HOST } from 'common/constants.js';
 // import sessionRoutes from './routes/session.routes.js';
 
 console.log(process.env.MONGODB_URI);
@@ -37,6 +39,6 @@ app.get('*', function (req, res) {
 });
 
 
-app.listen(8000, function() {
-    console.log("Starting server now...")
+app.listen(PORT, function() {
+    console.log(`Starting server now on ${LOCAL_HOST}:${PORT}...`)
 })
