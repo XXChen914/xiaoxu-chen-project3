@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { Mode } from "../../constants/Mode.js";
+import { Mode } from "#common/constants.js";
 
 const GameSchema = new Schema(
   {

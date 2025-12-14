@@ -1,10 +1,10 @@
-import { getModeByDifficulty } from "../constants/Mode";
+import { getModeByDifficulty } from "#common/constants.js";
 import { isValid } from "./validator";
 
 export function commonSudokuBuilder(difficulty) {
   const mode = getModeByDifficulty(difficulty);
   const { size, keepCellsMin, keepCellsMax } = mode;
-  
+
   // Step 1: Create an empty board
   const board = Array(size)
     .fill(0)
@@ -19,7 +19,7 @@ export function commonSudokuBuilder(difficulty) {
   // Step 3: Once the board is created, randomly remove cells to create the puzzle
   const cellsToRemove = size * size - getKeepCells(keepCellsMin, keepCellsMax);
   removeCells(board, cellsToRemove, size);
-  
+
   return board;
 }
 
@@ -27,9 +27,10 @@ function getKeepCells(keepCellsMin, keepCellsMax) {
   if (keepCellsMin === keepCellsMax) {
     return keepCellsMin;
   }
-  
-  return keepCellsMin + 
-    Math.floor(Math.random() * (keepCellsMax - keepCellsMin + 1));
+
+  return (
+    keepCellsMin + Math.floor(Math.random() * (keepCellsMax - keepCellsMin + 1))
+  );
 }
 
 function removeCells(board, cellsToRemove, size) {
@@ -39,7 +40,7 @@ function removeCells(board, cellsToRemove, size) {
       allCells.push([i, j]);
     }
   }
-  
+
   // Shuffle using Fisher-Yates algorithm (more reliable than sort)
   shuffleArray(allCells);
 
@@ -68,7 +69,7 @@ function fillBoard(board, mode) {
     const c = i % size;
 
     const candidates = Array.from({ length: size }, (_, i) => i + 1);
-    shuffleArray(candidates); 
+    shuffleArray(candidates);
 
     for (let num of candidates) {
       if (isValid(board, r, c, num, boxHeight, boxWidth)) {

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { commonSudokuBuilder } from "../utils/generator";
 import { isValid } from "../utils/validator";
-import { Mode, getModeByDifficulty } from "../constants/Mode";
+import { Mode, getModeByDifficulty } from "#common/constants.js";
 
 export const SudokuContext = createContext();
 
