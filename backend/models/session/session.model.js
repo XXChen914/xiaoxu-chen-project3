@@ -26,12 +26,8 @@ function updateBoard(userName, gameId, currentBoard) {
 function markCompleted(userName, gameId) {
   return SessionModel.findOneAndUpdate(
     { userName, gameId },
-    { $set: { completed: true} }
+    { $set: { completed: true } }
   ).exec();
 }
 
-function isCompleted(userName, gameId) {
-  return SessionModel.findOne({ userName, gameId, completed: true }).exec();
-}
-
-export { createSession, findSession, updateBoard, markCompleted, isCompleted };
+export { createSession, findSession, updateBoard, markCompleted };

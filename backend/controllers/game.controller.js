@@ -1,20 +1,34 @@
 import {
   createGame,
   findAllGames,
+  findGameByName,
+  findGameById,
   deleteGame as deleteGameById,
 } from "../models/game.model.js";
-import { findGameByName } from "../models/game/game.model.js";
 import {
   createSession,
   findSession,
   updateBoard,
+  markCompleted,
 } from "../models/session/session.model.js";
-import { commonSudokuBuilder } from "../utils/gameGenerator.js";
+import { createScore } from "../models/score/score.model.js";
+import commonSudokuBuilder from "../utils/gameGenerator.js";
 import generateGameName from "../utils/gameNameGenerator.js";
+import { decodeUserName } from "../utils/userNameDecoder.js";
+
+// Helper to get username from JWT, returns 401 if not found
+function getUsernameOrUnauthorized(req, res) {
+  const username = decodeUserName(req);
+  if (!username) {
+    res.status(401).json({ message: "Unauthorized: invalid or missing token" });
+    return null;
+  }
+  return username;
+}
 
 // GET /api/sudoku
 // Return all games
-async function getAllGames(req, res) {
+async function getAllGames(_, res) {
   try {
     const games = await findAllGames();
     const formatted = games.map((g) => ({
@@ -38,12 +52,12 @@ async function getAllGames(req, res) {
 // POST /api/sudoku
 // Create a new game (EASY or NORMAL)
 async function createSudoku(req, res) {
-  const { difficulty, username } = req.body;
+  const { difficulty } = req.body;
+  const username = getUsernameOrUnauthorized(req, res);
+  if (!username) return;
 
-  if (!difficulty || !username) {
-    return res
-      .status(400)
-      .json({ message: "difficulty and username are required" });
+  if (!difficulty) {
+    return res.status(400).json({ message: "difficulty is required" });
   }
 
   try {
@@ -62,8 +76,7 @@ async function createSudoku(req, res) {
       name: gameName,
       difficulty,
       creatorUsername: username,
-      initialBoard: board,
-      creatorUsername: username,
+      initialPuzzle: board,
     });
 
     await createSession({
@@ -71,6 +84,8 @@ async function createSudoku(req, res) {
       gameId: newGame._id,
       currentBoard: board,
     });
+
+    await createScore({ gameId: newGame._id, userName: username });
 
     res.status(201).json({ gameId: newGame._id, gameName: newGame.name });
   } catch (err) {
@@ -83,44 +98,33 @@ async function createSudoku(req, res) {
 // Return the current game state played by the user
 async function getGameSession(req, res) {
   const { gameId } = req.params;
-  const { username } = req.body;
+  const username = getUsernameOrUnauthorized(req, res);
+  if (!username) return;
+
+  if (!gameId) {
+    return res.status(400).json({ message: "gameId is required" });
+  }
+
   try {
-    const session = await findSession(username, gameId);
+    let session = await findSession(username, gameId);
     if (!session) {
       const game = await findGameById(gameId);
       if (!game) {
         return res.status(404).json({ message: "Game not found" });
       }
-      const board = game.initialBoard;
-      await createSession({ userName: username, gameId, currentBoard: board });
+      session = await createSession({
+        userName: username,
+        gameId,
+        currentBoard: game.initialBoard,
+      });
     }
 
-    res.status(200).json(session.currentBoard);
+    res.status(200).json({
+      currentBoard: session.currentBoard,
+      completed: session.completed,
+    });
   } catch (err) {
-    console.error("Error fetching games:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
-
-// DELETE /api/sudoku/:gameId
-async function deleteSudoku(req, res) {
-  const { gameId } = req.params;
-  const { username } = req.body;
-  if (!gameId) return res.status(400).json({ message: "gameId is required" });
-
-  try {
-    const game = await findGameById(gameId);
-    if (game.creatorUsername !== username) {
-      return res
-        .status(403)
-        .json({ message: "Only the creator can delete this game" });
-    }
-    const deleted = await deleteGameById(gameId);
-    if (!deleted) return res.status(404).json({ message: "Game not found" });
-
-    res.status(200).json({ message: "Game deleted successfully" });
-  } catch (err) {
-    console.error("Error deleting Sudoku game:", err);
+    console.error("Error fetching game session:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -129,12 +133,12 @@ async function deleteSudoku(req, res) {
 // Update a user's game state
 async function updateSudoku(req, res) {
   const { gameId } = req.params;
-  const { username, board, completed } = req.body;
+  const { board, completed } = req.body;
+  const username = getUsernameOrUnauthorized(req, res);
+  if (!username) return;
 
-  if (!gameId || !username) {
-    return res
-      .status(400)
-      .json({ message: "gameId and username are required" });
+  if (!gameId) {
+    return res.status(400).json({ message: "gameId is required" });
   }
 
   try {
@@ -143,10 +147,70 @@ async function updateSudoku(req, res) {
       await markCompleted(username, gameId);
       return res.status(200).json({ message: "Game marked as completed" });
     }
-    await updateBoard(username, gameId, board);
-    res.status(200).json({ message: "Game updated successfully" });
+
+    const updatedSession = await updateBoard(username, gameId, board);
+    res.status(200).json({
+      message: "Game state updated successfully",
+      currentBoard: updatedSession.currentBoard,
+    });
   } catch (err) {
     console.error("Error updating Sudoku game:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// DELETE /api/sudoku/:gameId
+async function deleteSudoku(req, res) {
+  const { gameId } = req.params;
+  const username = getUsernameOrUnauthorized(req, res);
+  if (!username) return;
+  if (!gameId) return res.status(400).json({ message: "gameId is required" });
+
+  try {
+    const game = await findGameById(gameId);
+    if (!game) return res.status(404).json({ message: "Game not found" });
+
+    if (game.creatorUsername !== username) {
+      return res
+        .status(403)
+        .json({ message: "Only the creator can delete this game" });
+    }
+
+    await deleteGameById(gameId);
+    res.status(200).json({ message: "Game deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting Sudoku game:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// POST /api/sudoku/:gameId/reset
+// Reset a user's session board to initialPuzzle
+async function resetSudoku(req, res) {
+  const { gameId } = req.params;
+  const username = getUsernameOrUnauthorized(req, res);
+  if (!username) return;
+
+  if (!gameId) {
+    return res.status(400).json({ message: "gameId is required" });
+  }
+
+  try {
+    const game = await findGameById(gameId);
+    if (!game) return res.status(404).json({ message: "Game not found" });
+
+    const updatedSession = await updateBoard(
+      username,
+      gameId,
+      game.initialPuzzle,
+    );
+
+    res.status(200).json({
+      message: "Game reset successfully",
+      currentBoard: updatedSession.currentBoard,
+    });
+  } catch (err) {
+    console.error("Error resetting Sudoku game:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -157,4 +221,5 @@ export {
   deleteSudoku,
   updateSudoku,
   getGameSession,
+  resetSudoku,
 };

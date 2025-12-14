@@ -3,6 +3,10 @@ import ScoreSchema from "./score.schema.js";
 
 const ScoreModel = mongoose.model("Score", ScoreSchema);
 
+function createScore(score) {
+  return ScoreModel.create(score);
+}
+
 // Find score by gameId
 function findScoreByGameId(gameId) {
   return ScoreModel.findOne({ gameId }).exec();
@@ -28,4 +32,4 @@ function getTopScores() {
     .exec();
 }
 
-export { findScoreByGameId, incrementCompletions, getTopScores };
+export { createScore, findScoreByGameId, incrementCompletions, getTopScores };

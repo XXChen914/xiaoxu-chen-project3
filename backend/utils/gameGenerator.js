@@ -1,7 +1,7 @@
 import { getModeByDifficulty } from "common/constants.js";
 import { isValid } from "./validator";
 
-export function commonSudokuBuilder(difficulty) {
+export default function commonSudokuBuilder(difficulty) {
   const mode = getModeByDifficulty(difficulty);
   const { size, keepCellsMin, keepCellsMax } = mode;
 
