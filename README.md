@@ -1,8 +1,6 @@
 # Welcome to [Lucy's Sudoku](https://xiaoxu-chen-project3.onrender.com)!
-## Walkhthrough Video
-See [Video]() here
-
-## Render Link
+## Video & Render Link
+See [Video]() here.  
 See my [web in Render](https://xiaoxu-chen-project3.onrender.com)
 # Writeup
 - **What were some challenges you faced while making this app?**   
