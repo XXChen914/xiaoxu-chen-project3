@@ -1,6 +1,6 @@
 # Welcome to [Lucy's Sudoku](https://xiaoxu-chen-project3.onrender.com)!
 ## Video & Render Link
-See [Video]() here.  
+See [Video](https://youtu.be/6Ww6euEzowI) here.  
 See my [web in Render](https://xiaoxu-chen-project3.onrender.com)
 ## Code Navigation
 - RESTful APIs: see [controllers](https://github.com/XXChen914/xiaoxu-chen-project3/tree/231db405ed5bea4a9bbda7597958683142302a22/backend/controllers) and [routes](https://github.com/XXChen914/xiaoxu-chen-project3/tree/231db405ed5bea4a9bbda7597958683142302a22/backend/routes)
