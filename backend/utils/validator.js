@@ -1,4 +1,4 @@
-export function isValid(board, row, col, val, boxHeight, boxWidth) {
+export default function isValid(board, row, col, val, boxHeight, boxWidth) {
   const size = board.length;
   if (val === 0) return true;
 

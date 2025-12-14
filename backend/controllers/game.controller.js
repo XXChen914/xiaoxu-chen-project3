@@ -4,7 +4,7 @@ import {
   findGameByName,
   findGameById,
   deleteGame as deleteGameById,
-} from "../models/game.model.js";
+} from "../models/game/game.model.js";
 import {
   createSession,
   findSession,
