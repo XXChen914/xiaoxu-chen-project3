@@ -6,29 +6,30 @@ import { Mode, getModeByDifficulty } from "common/constants.js";
 import "./SudokuGame.css";
 
 export default function SudokuGame() {
-  const { difficulty } = useParams();
+  const { gameId } = useParams();
   const {
-    createNewGame,
     resetBoard,
     inputValue,
     selectedCell,
     timer,
     isComplete,
     mode,
+    gameName,
+    getGameSession,
   } = useContext(SudokuContext);
 
-  // Sync URL difficulty with context mode
+  // Set gameId and fetch game session on mount or when gameId changes
   useEffect(() => {
-    if (difficulty && difficulty !== mode) {
-      createNewGame(difficulty);
+    if (gameId) {
+      getGameSession(gameId);
     }
-  }, [difficulty, mode, createNewGame]);
+  }, [gameId, getGameSession]);
 
   const maxValue = getModeByDifficulty(mode).size;
 
   // Header text based on mode
   const isEasy = mode === Mode.EASY.difficulty;
-  const titleText = isEasy ? "Easy Game — 6×6" : "Normal Game — 9×9";
+  const titleText = isEasy ? `${gameName} — 6×6` : `${gameName} — 9×9`;
   const subtitleText = isEasy
     ? "Kick off your Sudoku journey!"
     : "Challenge yourself with the full Sudoku grid!";
@@ -100,14 +101,9 @@ export default function SudokuGame() {
 
         <section className="sudoku-game__controls">
           <button
-            className="sudoku-game__control-button sudoku-game__control-button--new"
-            onClick={() => createNewGame(mode)}
-          >
-            New Game
-          </button>
-          <button
             className="sudoku-game__control-button sudoku-game__control-button--reset"
             onClick={resetBoard}
+            disabled={isComplete}
           >
             Reset
           </button>

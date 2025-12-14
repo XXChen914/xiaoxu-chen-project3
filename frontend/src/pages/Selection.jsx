@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout.jsx";
-import { Mode } from "common/constants.js";
+import { SudokuContext } from "../components/SudokuProvider";
+import { Mode } from "common/constants";
 import "./Selection.css";
 
 export default function Selection() {
+  const { setMode, setGameId, setGameName } = useContext(SudokuContext);
   const navigate = useNavigate();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +18,7 @@ export default function Selection() {
       const { data } = await axios.get("/api/sudoku");
       setGames(data);
     } catch (err) {
-      console.error("Error fetching games:", err);
+      console.error("Error fetching games:", err.message);
     } finally {
       setLoading(false);
     }
@@ -30,9 +32,12 @@ export default function Selection() {
   const createGame = async (difficulty) => {
     try {
       const { data } = await axios.post("/api/sudoku", { difficulty });
+      setMode(difficulty);
+      setGameId(data.gameId);
+      setGameName(data.gameName);
       navigate(`/game/${data.gameId}`);
     } catch (err) {
-      console.error("Error creating game:", err);
+      console.error("Error creating game:", err.message);
     }
   };
 

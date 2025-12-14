@@ -11,7 +11,7 @@ async function getHighscores(req, res) {
     const scores = await getTopScores();
     res.status(200).json(scores);
   } catch (err) {
-    console.error("Error fetching highscores:", err);
+    console.error("Error fetching highscores:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -32,7 +32,7 @@ async function updateHighscore(req, res) {
     const updatedScore = await incrementCompletions(gameId, gameName);
     res.status(200).json(updatedScore);
   } catch (err) {
-    console.error(`Error updating highscore for gameId ${gameId}:`, err);
+    console.error(`Error updating highscore for gameId ${gameId}:`, err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -49,7 +49,7 @@ async function getHighscoreByGameId(req, res) {
     }
     res.status(200).json(score);
   } catch (err) {
-    console.error("Error fetching highscore:", err);
+    console.error("Error fetching highscore:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }

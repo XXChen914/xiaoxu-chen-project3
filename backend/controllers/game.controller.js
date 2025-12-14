@@ -44,7 +44,7 @@ async function getAllGames(_, res) {
     }));
     res.status(200).json(formatted);
   } catch (err) {
-    console.error("Error fetching games:", err);
+    console.error("Error fetching games:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -85,11 +85,11 @@ async function createSudoku(req, res) {
       currentBoard: board,
     });
 
-    await createScore({ gameId: newGame._id, userName: username });
+    await createScore({ gameId: newGame._id, userName: username, gameName: gameName });
 
     res.status(201).json({ gameId: newGame._id, gameName: newGame.name });
   } catch (err) {
-    console.error("Error creating Sudoku game:", err);
+    console.error("Error creating Sudoku game:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -105,26 +105,30 @@ async function getGameSession(req, res) {
     return res.status(400).json({ message: "gameId is required" });
   }
 
+  const game = await findGameById(gameId);
+  if (!game) {
+    return res.status(404).json({ message: "Game not found" });
+  }
+
   try {
     let session = await findSession(username, gameId);
     if (!session) {
-      const game = await findGameById(gameId);
-      if (!game) {
-        return res.status(404).json({ message: "Game not found" });
-      }
       session = await createSession({
         userName: username,
         gameId,
-        currentBoard: game.initialBoard,
+        currentBoard: game.initialPuzzle,
       });
     }
 
     res.status(200).json({
       currentBoard: session.currentBoard,
       completed: session.completed,
+      initialPuzzle: game.initialPuzzle,
+      mode: game.difficulty,
+      gameName: game.name,
     });
   } catch (err) {
-    console.error("Error fetching game session:", err);
+    console.error("Error fetching game session:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -154,7 +158,7 @@ async function updateSudoku(req, res) {
       currentBoard: updatedSession.currentBoard,
     });
   } catch (err) {
-    console.error("Error updating Sudoku game:", err);
+    console.error("Error updating Sudoku game:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -179,7 +183,7 @@ async function deleteSudoku(req, res) {
     await deleteGameById(gameId);
     res.status(200).json({ message: "Game deleted successfully" });
   } catch (err) {
-    console.error("Error deleting Sudoku game:", err);
+    console.error("Error deleting Sudoku game:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -210,7 +214,7 @@ async function resetSudoku(req, res) {
       currentBoard: updatedSession.currentBoard,
     });
   } catch (err) {
-    console.error("Error resetting Sudoku game:", err);
+    console.error("Error resetting Sudoku game:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }

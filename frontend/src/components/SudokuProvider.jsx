@@ -1,13 +1,18 @@
 import { createContext, useEffect, useState } from "react";
-import { isValid } from "../utils/validator";
-import { Mode, getModeByDifficulty } from "common/constants.js";
+import { useOutletContext } from "react-router-dom";
+import axios from "axios";
+import { isValid } from "../utils/validator.js";
+import { getModeByDifficulty } from "common/constants.js";
 
 export const SudokuContext = createContext();
 
 export default function SudokuProvider(props) {
-  const [mode, setMode] = useState(Mode.EASY.difficulty); // 'easy' or 'normal'
+  const { username } = useOutletContext();
+  const [mode, setMode] = useState(null); // 'easy' or 'normal'
+  const [gameId, setGameId] = useState(null);
+  const [gameName, setGameName] = useState("");
   const [initialBoard, setInitialBoard] = useState([[]]); // immutable cells
-  const [board, setBoard] = useState([[]]);               // current board state
+  const [board, setBoard] = useState([[]]); // current board state
   const [selectedCell, setSelectedCell] = useState(null); // {row, col}
   const [incorrectCells, setIncorrectCells] = useState(new Set());
   const [isComplete, setIsComplete] = useState(false);
@@ -25,34 +30,39 @@ export default function SudokuProvider(props) {
     return () => clearInterval(interval);
   }, [isTimerRunning, isComplete]);
 
-  // Initialize board on mount
-  useEffect(() => {
-    createNewGame(mode);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Get the game session on gameId change
+  // useEffect(() => {
+  //   getGameSession(gameId);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  // Create a new puzzle
-  function createNewGame(newmode = mode) {
-    // const board = commonSudokuBuilder(newmode);
-    const board = []
+  /**
+   * Get the game session from backend for the current user and gameId.
+   */
+  async function getGameSession(gameId) {
+    try {
+      // Fetch the current session to get the board state
+      setGameId(gameId);
+      const { data } = await axios.get(`/api/sudoku/${gameId}`);
 
-    // Deep copy for initial state
-    const newInitialBoard = board.map((row) => [...row]);
-
-    setBoard(board);
-    setInitialBoard(newInitialBoard);
-    setMode(newmode);
-    setSelectedCell(null);
-    setIncorrectCells(new Set());
-    setIsComplete(false);
-    setTimer(0);
-    setIsTimerRunning(true);
+      setBoard(data.currentBoard);
+      setGameName(data.gameName);
+      setInitialBoard(data.initalPuzzle);
+      setMode(data.mode);
+      setSelectedCell(null);
+      setIncorrectCells(new Set());
+      setIsComplete(data.completed);
+      setTimer(0);
+      setIsTimerRunning(true);
+    } catch (err) {
+      console.error("Error creating new game:", err.message);
+    }
   }
 
-  function resetBoard() {
+  async function resetBoard() {
     // Restore to initial state
-    const resetBoard = initialBoard.map((row) => [...row]);
-    setBoard(resetBoard);
+    const { data } = await axios.get(`/api/sudoku/${gameId}/reset`);
+    setBoard(data.currentBoard);
     setSelectedCell(null);
     setIncorrectCells(new Set());
     setIsComplete(false);
@@ -75,7 +85,7 @@ export default function SudokuProvider(props) {
     }
   }
 
-  function inputValue(row, col, value) {
+  async function inputValue(row, col, value) {
     // Check if cell is editable and game not complete
     if (isComplete || !isCellEditable(row, col)) return;
     // Check if value is an integer
@@ -92,11 +102,14 @@ export default function SudokuProvider(props) {
 
     // Validate the cell and get incorrect cells
     const newIncorrectCells = computeIncorrectCells(newBoard, mode);
-    setBoard(newBoard);
-    setIncorrectCells(newIncorrectCells);
-
-    // Check if board is complete
     checkCompletion(newBoard);
+
+    const { data } = await axios.put(`/api/sudoku/${gameId}`, {
+      board: newBoard,
+      completed: isComplete,
+    });
+    setBoard(data.currentBoard);
+    setIncorrectCells(newIncorrectCells);
   }
 
   function computeIncorrectCells(currentBoard, difficulty) {
@@ -138,12 +151,17 @@ export default function SudokuProvider(props) {
   }
 
   const globalDataAndFunctions = {
-    createNewGame,
     resetBoard,
     selectCell,
     isCellEditable,
     isCellIncorrect,
     inputValue,
+    getGameSession,
+    setGameId,
+    setGameName,
+    setMode,
+    username,
+    gameName,
     mode,
     board,
     initialBoard,

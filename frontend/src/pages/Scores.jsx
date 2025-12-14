@@ -21,7 +21,7 @@ export default function Scores() {
 
         setScores(ranked);
       } catch (err) {
-        console.error("Error fetching scores:", err);
+        console.error("Error fetching scores:", err.message);
       } finally {
         setLoading(false);
       }

@@ -1,6 +1,3 @@
-to start your app, run the command `npm run dev`
-
-Make sure to update the MongoDB string in server.js to start
 # Welcome to [Lucy's Sudoku]()!
 ## Walkhthrough Video
 See [Video]() here

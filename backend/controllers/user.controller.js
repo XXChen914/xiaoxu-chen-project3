@@ -22,7 +22,7 @@ export async function isLoggedIn(req, res) {
     }
     res.json({ username });
   } catch (error) {
-    console.error("Error checking login:", error);
+    console.error("Error checking login:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 }
@@ -58,7 +58,7 @@ export async function login(req, res) {
     res.cookie("token", token, getCookieOptions());
     res.status(200).json({ message: "Login successful", username });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Login error:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 }
@@ -96,7 +96,7 @@ export async function register(req, res) {
       .status(201)
       .json({ message: "User created", username: newUser.username });
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error("Registration error:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 }
@@ -113,7 +113,7 @@ export async function logout(req, res) {
     });
     res.json({ message: "Logged out successfully" });
   } catch (error) {
-    console.error("Logout error:", error);
+    console.error("Logout error:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 }
