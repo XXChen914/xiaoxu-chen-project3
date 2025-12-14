@@ -1,30 +1,20 @@
 {
-  "name": "cs5610_spr23_mod3",
+  "name": "xiaoxu-chen-project3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "workspaces": [
     "backend",
-    "frontend"
+    "frontend",
+    "common"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
-    "build": "npm run build -ws --if-present",
-    "prod": "npm run start -w backend"
+    "build": "npm run build -w frontend",
+    "start": "npm run start -w backend",
+    "prod": "npm run build && npm run start"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ajorgense1-chwy/cs5610_spr23_mod3.git"
-  },
-  "author": "",
+  "author": "Xiaoxu Chen",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ajorgense1-chwy/cs5610_spr23_mod3/issues"
-  },
-  "homepage": "https://github.com/ajorgense1-chwy/cs5610_spr23_mod3#readme",
-  "dependencies": {
-  },
   "devDependencies": {
     "concurrently": "^8.0.1"
   }
