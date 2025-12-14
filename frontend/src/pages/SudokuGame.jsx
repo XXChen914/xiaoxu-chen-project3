@@ -25,7 +25,7 @@ export default function SudokuGame() {
     }
   }, [gameId, getGameSession]);
 
-  const maxValue = getModeByDifficulty(mode).size;
+  const maxValue = mode ? getModeByDifficulty(mode).size : 0;
 
   // Header text based on mode
   const isEasy = mode === Mode.EASY.difficulty;

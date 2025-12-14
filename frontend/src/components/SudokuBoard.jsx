@@ -6,6 +6,10 @@ import "./SudokuBoard.css";
 
 export default function SudokuBoard() {
   const { board, mode } = useContext(SudokuContext);
+  if (!board || board.length === 0 || !mode) {
+    return null;
+  }
+  
   const size = board.length;
   const currentMode = getModeByDifficulty(mode);
   const { boxHeight, boxWidth } = currentMode;

@@ -8,6 +8,7 @@ export const SudokuContext = createContext();
 
 export default function SudokuProvider(props) {
   const { username } = useOutletContext();
+
   const [mode, setMode] = useState(null); // 'easy' or 'normal'
   const [gameId, setGameId] = useState(null);
   const [gameName, setGameName] = useState("");
@@ -42,13 +43,14 @@ export default function SudokuProvider(props) {
   async function getGameSession(gameId) {
     try {
       // Fetch the current session to get the board state
-      setGameId(gameId);
+
       const { data } = await axios.get(`/api/sudoku/${gameId}`);
 
+      setMode(data.mode);
       setBoard(data.currentBoard);
       setGameName(data.gameName);
-      setInitialBoard(data.initalPuzzle);
-      setMode(data.mode);
+      setGameId(gameId);
+      setInitialBoard(data.initialPuzzle.map((row) => [...row]));
       setSelectedCell(null);
       setIncorrectCells(new Set());
       setIsComplete(data.completed);
@@ -61,7 +63,7 @@ export default function SudokuProvider(props) {
 
   async function resetBoard() {
     // Restore to initial state
-    const { data } = await axios.get(`/api/sudoku/${gameId}/reset`);
+    const { data } = await axios.post(`/api/sudoku/${gameId}/reset`);
     setBoard(data.currentBoard);
     setSelectedCell(null);
     setIncorrectCells(new Set());
@@ -102,7 +104,7 @@ export default function SudokuProvider(props) {
 
     // Validate the cell and get incorrect cells
     const newIncorrectCells = computeIncorrectCells(newBoard, mode);
-    checkCompletion(newBoard);
+    checkCompletion(newBoard, newIncorrectCells);
 
     const { data } = await axios.put(`/api/sudoku/${gameId}`, {
       board: newBoard,
@@ -133,7 +135,7 @@ export default function SudokuProvider(props) {
     return newIncorrectCells;
   }
 
-  function checkCompletion(board) {
+  function checkCompletion(board, incorrectCellsSet) {
     const size = board.length;
 
     // Check if all cells are filled
@@ -144,7 +146,7 @@ export default function SudokuProvider(props) {
     }
 
     // Check if there are any invalid cells
-    if (incorrectCells.size === 0) {
+    if (incorrectCellsSet.size === 0) {
       setIsComplete(true);
       setIsTimerRunning(false);
     }
