@@ -20,10 +20,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
+      { index: true, element: <Home /> },
       {
         path: "games",
         element: (
@@ -44,22 +41,10 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
-      {
-        path: "rules",
-        element: <Rules />,
-      },
-      {
-        path: "scores",
-        element: <Scores />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "register",
-        element: <Register />,
-      },
+      { path: "rules", element: <Rules /> },
+      { path: "scores", element: <Scores /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
     ],
   },
 ]);

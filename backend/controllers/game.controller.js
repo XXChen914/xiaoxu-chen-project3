@@ -9,9 +9,11 @@ import {
   createSession,
   findSession,
   updateBoard,
-  markCompleted,
 } from "../models/session/session.model.js";
-import { createScore } from "../models/score/score.model.js";
+import {
+  createScore,
+  incrementCompletions,
+} from "../models/score/score.model.js";
 import commonSudokuBuilder from "../utils/gameGenerator.js";
 import generateGameName from "../utils/gameNameGenerator.js";
 import { decodeUserName } from "../utils/userNameDecoder.js";
@@ -85,7 +87,11 @@ async function createSudoku(req, res) {
       currentBoard: board,
     });
 
-    await createScore({ gameId: newGame._id, userName: username, gameName: gameName });
+    await createScore({
+      gameId: newGame._id,
+      userName: username,
+      gameName: gameName,
+    });
 
     res.status(201).json({ gameId: newGame._id, gameName: newGame.name });
   } catch (err) {
@@ -126,6 +132,7 @@ async function getGameSession(req, res) {
       initialPuzzle: game.initialPuzzle,
       mode: game.difficulty,
       gameName: game.name,
+      elapsedTime: session.timer,
     });
   } catch (err) {
     console.error("Error fetching game session:", err.message);
@@ -137,7 +144,7 @@ async function getGameSession(req, res) {
 // Update a user's game state
 async function updateSudoku(req, res) {
   const { gameId } = req.params;
-  const { board, completed } = req.body;
+  const { board, completed, timer, gameName } = req.body;
   const username = getUsernameOrUnauthorized(req, res);
   if (!username) return;
 
@@ -146,13 +153,18 @@ async function updateSudoku(req, res) {
   }
 
   try {
+    const updatedSession = await updateBoard(
+      username,
+      gameId,
+      board,
+      timer,
+      completed
+    );
+
     if (completed) {
-      // Mark session as completed
-      await markCompleted(username, gameId);
-      return res.status(200).json({ message: "Game marked as completed" });
+      await incrementCompletions(gameId, gameName);
     }
 
-    const updatedSession = await updateBoard(username, gameId, board);
     res.status(200).json({
       message: "Game state updated successfully",
       currentBoard: updatedSession.currentBoard,
@@ -206,7 +218,8 @@ async function resetSudoku(req, res) {
     const updatedSession = await updateBoard(
       username,
       gameId,
-      game.initialPuzzle
+      game.initialPuzzle,
+      0
     );
 
     res.status(200).json({

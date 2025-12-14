@@ -6,6 +6,7 @@ const SessionSchema = new Schema(
     gameId: { type: Schema.Types.ObjectId, ref: "Game", required: true },
     currentBoard: { type: [[Number]], required: true }, // player's current progress
     completed: { type: Boolean, default: false },
+    timer: { type: Number, default: 0 },
   },
   {
     collection: "sessions",

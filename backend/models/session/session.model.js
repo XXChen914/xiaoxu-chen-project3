@@ -14,20 +14,12 @@ function findSession(userName, gameId) {
 }
 
 // Update current board of a session
-function updateBoard(userName, gameId, currentBoard) {
+function updateBoard(userName, gameId, currentBoard, currentTimer, completed) {
   return SessionModel.findOneAndUpdate(
     { userName, gameId },
-    { $set: { currentBoard } },
+    { $set: { currentBoard, timer: currentTimer, completed } },
     { new: true }
   ).exec();
 }
 
-// Mark session as completed
-function markCompleted(userName, gameId) {
-  return SessionModel.findOneAndUpdate(
-    { userName, gameId },
-    { $set: { completed: true } }
-  ).exec();
-}
-
-export { createSession, findSession, updateBoard, markCompleted };
+export { createSession, findSession, updateBoard };
