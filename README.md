@@ -2,6 +2,10 @@
 ## Video & Render Link
 See [Video]() here.  
 See my [web in Render](https://xiaoxu-chen-project3.onrender.com)
+## Code Navigation
+- RESTful APIs: see [controllers](https://github.com/XXChen914/xiaoxu-chen-project3/tree/231db405ed5bea4a9bbda7597958683142302a22/backend/controllers) and [routes](https://github.com/XXChen914/xiaoxu-chen-project3/tree/231db405ed5bea4a9bbda7597958683142302a22/backend/routes)
+- MongoDB, Mongoose and Security Implementation: see [database connection](https://github.com/XXChen914/xiaoxu-chen-project3/blob/231db405ed5bea4a9bbda7597958683142302a22/backend/server.js#L18), [cookies](https://github.com/XXChen914/xiaoxu-chen-project3/blob/231db405ed5bea4a9bbda7597958683142302a22/backend/controllers/user.controller.js) and [username decoding](https://github.com/XXChen914/xiaoxu-chen-project3/blob/231db405ed5bea4a9bbda7597958683142302a22/backend/utils/userNameDecoder.js)
+
 # Writeup
 - **What were some challenges you faced while making this app?**   
 One of the main challenges I faced was managing state across multiple components, especially ensuring the Sudoku board, selected cell, incorrect cells, and timer stayed in sync. Handling asynchronous API calls while avoiding unnecessary resets of the board or timer required careful use of useEffect and context. Another challenge was implementing a dynamic, editable Sudoku board that supports different grid sizes (6×6 and 9×9) while preserving immutability for the initial puzzle cells.
