@@ -16,15 +16,14 @@ const GameSchema = new Schema(
       required: true,
     },
     // record initial puzzle state for resetting
-    initialPuzzle: {
+    initialBoard: {
       type: [[Number]], // grid, 0 represents empty cells
       required: true,
       immutable: true,
     },
     // user who created the game
-    creatorId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+    creatorUsername: {
+      type: String,
       required: true,
     },
   },

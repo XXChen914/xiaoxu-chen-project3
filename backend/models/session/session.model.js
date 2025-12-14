@@ -4,34 +4,34 @@ import SessionSchema from "./session.schema.js";
 const SessionModel = mongoose.model("Session", SessionSchema);
 
 // Create a new session for a user
-function createSession(sessionData) {
-  return SessionModel.create(sessionData);
+function createSession(session) {
+  return SessionModel.create(session);
 }
 
-// Find a session by userId and gameId
-function findSession(userId, gameId) {
-  return SessionModel.findOne({ userId, gameId }).exec();
+// Find a session by userName and gameId
+function findSession(userName, gameId) {
+  return SessionModel.findOne({ userName, gameId }).exec();
 }
 
 // Update current board of a session
-function updateBoard(userId, gameId, currentBoard) {
+function updateBoard(userName, gameId, currentBoard) {
   return SessionModel.findOneAndUpdate(
-    { userId, gameId },
+    { userName, gameId },
     { $set: { currentBoard } },
     { new: true }
   ).exec();
 }
 
 // Mark session as completed
-function markCompleted(userId, gameId) {
+function markCompleted(userName, gameId) {
   return SessionModel.findOneAndUpdate(
-    { userId, gameId },
-    { $set: { completed: true, completedAt: new Date() } }
+    { userName, gameId },
+    { $set: { completed: true} }
   ).exec();
 }
 
-function isCompleted(userId, gameId) {
-  return SessionModel.findOne({ userId, gameId, completed: true }).exec();
+function isCompleted(userName, gameId) {
+  return SessionModel.findOne({ userName, gameId, completed: true }).exec();
 }
 
 export { createSession, findSession, updateBoard, markCompleted, isCompleted };
