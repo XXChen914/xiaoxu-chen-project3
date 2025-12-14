@@ -7,7 +7,7 @@ import userRoutes from './routes/user.routes.js';
 import scoreRoutes from './routes/score.routes.js';
 
 import { PORT, LOCAL_HOST } from 'common/constants.js';
-// import sessionRoutes from './routes/session.routes.js';
+import gameRoutes from './routes/game.routes.js';
 
 console.log(process.env.MONGODB_URI);
 console.log(process.env.SUPER_SECRET);
@@ -33,7 +33,7 @@ app.use(express.static(frontend_dir));
 
 app.use('/api/user', userRoutes);
 app.use('/api/highscore', scoreRoutes);
-// app.use('/api/game', sessionRoutes);
+app.use('/api/game', gameRoutes);
 app.get('*', function (req, res) {
     res.sendFile(path.join(frontend_dir, "index.html"));
 });

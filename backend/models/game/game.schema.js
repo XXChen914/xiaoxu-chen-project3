@@ -16,7 +16,7 @@ const GameSchema = new Schema(
       required: true,
     },
     // record initial puzzle state for resetting
-    initialBoard: {
+    initialPuzzle: {
       type: [[Number]], // grid, 0 represents empty cells
       required: true,
       immutable: true,

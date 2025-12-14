@@ -202,7 +202,7 @@ async function resetSudoku(req, res) {
     const updatedSession = await updateBoard(
       username,
       gameId,
-      game.initialPuzzle,
+      game.initialPuzzle
     );
 
     res.status(200).json({
