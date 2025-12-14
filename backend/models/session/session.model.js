@@ -22,4 +22,19 @@ function updateBoard(userName, gameId, currentBoard, currentTimer, completed) {
   ).exec();
 }
 
-export { createSession, findSession, updateBoard };
+// Find or create session (atomic operation)
+function findOrCreateSession(userName, gameId, initialBoard) {
+  return SessionModel.findOneAndUpdate(
+    { userName, gameId },
+    { 
+      $setOnInsert: { 
+        currentBoard: initialBoard,
+        completed: false,
+        timer: 0 
+      } 
+    },
+    { upsert: true, new: true }
+  ).exec();
+}
+
+export { createSession, findSession, updateBoard, findOrCreateSession };

@@ -7,7 +7,7 @@ import {
 } from "../models/game/game.model.js";
 import {
   createSession,
-  findSession,
+  findOrCreateSession,
   updateBoard,
 } from "../models/session/session.model.js";
 import {
@@ -117,14 +117,11 @@ async function getGameSession(req, res) {
   }
 
   try {
-    let session = await findSession(username, gameId);
-    if (!session) {
-      session = await createSession({
-        userName: username,
-        gameId,
-        currentBoard: game.initialPuzzle,
-      });
-    }
+    const session = await findOrCreateSession(
+      username,
+      gameId,
+      game.initialPuzzle
+    );
 
     res.status(200).json({
       currentBoard: session.currentBoard,
