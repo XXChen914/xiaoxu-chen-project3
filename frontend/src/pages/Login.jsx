@@ -1,18 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Layout from "../components/Layout.jsx";
 import FormField from "../components/FormField.jsx";
 import "./AuthForm.css";
 
 export default function Login() {
-  const navigate = useNavigate();
+  const { setUsername } = useOutletContext();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Update form state
   const handleChange = (e) => {
@@ -31,7 +32,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await axios.post(
+      const res = await axios.post(
         "/api/user/login",
         {
           username: formData.username,
@@ -43,10 +44,11 @@ export default function Login() {
       );
 
       // Login successful
+      setUsername(res.data.username);
       navigate("/games");
     } catch (err) {
       if (err.response?.data) {
-        setError(err.response.data);
+        setError(err.response.data.message);
       } else {
         setError("Login failed. Please try again.");
       }

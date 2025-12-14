@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { commonSudokuBuilder } from "../utils/generator";
 import { isValid } from "../utils/validator";
 import { Mode, getModeByDifficulty } from "common/constants.js";
 
@@ -34,7 +33,8 @@ export default function SudokuProvider(props) {
 
   // Create a new puzzle
   function createNewGame(newmode = mode) {
-    const board = commonSudokuBuilder(newmode);
+    // const board = commonSudokuBuilder(newmode);
+    const board = []
 
     // Deep copy for initial state
     const newInitialBoard = board.map((row) => [...row]);

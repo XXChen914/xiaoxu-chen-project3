@@ -32,7 +32,7 @@ export default function App() {
   return (
     <div className="app">
       <NavBar username={username} onLogout={handleLogout} />
-      <Outlet context={{ username }} />
+      <Outlet context={{ username, setUsername }} />
     </div>
   );
 }

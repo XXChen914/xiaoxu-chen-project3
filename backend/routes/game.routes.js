@@ -16,7 +16,7 @@ router.get("/", getAllGames);
 
 // POST /api/sudoku
 // Creates a new game (EASY or NORMAL)
-router.post("/sudoku", createSudoku);
+router.post("/", createSudoku);
 
 // GET /api/sudoku/:gameId
 // Returns the current game state for the user

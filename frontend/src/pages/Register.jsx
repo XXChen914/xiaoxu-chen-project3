@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Layout from "../components/Layout.jsx";
 import FormField from "../components/FormField.jsx";
 
 export default function Register() {
-  const navigate = useNavigate();
-
+  const { setUsername } = useOutletContext();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -14,6 +13,8 @@ export default function Register() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   // Update form state on input change
   const handleChange = (e) => {
@@ -41,7 +42,7 @@ export default function Register() {
       const password = formData.password.trim();
       const verifyPassword = formData.passwordVerify.trim();
 
-      await axios.post(
+      const res = await axios.post(
         "/api/user/register",
         {
           username,
@@ -54,6 +55,7 @@ export default function Register() {
       );
 
       // Registration successful, redirect to /games
+      setUsername(res.data.username);
       navigate("/games");
     } catch (err) {
       // Axios error handling

@@ -27,7 +27,7 @@ app.use(express.static(frontend_dir));
 
 app.use('/api/user', userRoutes);
 app.use('/api/highscore', scoreRoutes);
-app.use('/api/game', gameRoutes);
+app.use('/api/sudoku', gameRoutes);
 app.get('*', function (_, res) {
     res.sendFile(path.join(frontend_dir, "index.html"));
 });

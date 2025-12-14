@@ -26,6 +26,34 @@
   font-style: italic;
 }
 
+.create-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.create-buttons button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: white;
+}
+
+.create-buttons button:nth-child(2) {
+  background: linear-gradient(135deg, #fb6f92, #ff5a82);
+}
+
+.create-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .game-list {
   list-style: none;
   padding: 0;
@@ -96,34 +124,6 @@
   margin-bottom: 0.5rem;
 }
 
-.game-item a {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #000;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  position: relative;
-}
-
-.game-item a::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: #fb6f92;
-  transition: width 0.3s ease;
-}
-
-.game-item a:hover::after {
-  width: 100%;
-}
-
-.game-item a:hover {
-  color: #fb6f92;
-}
-
 .game-meta {
   font-size: 0.9rem;
   color: #666;
@@ -152,16 +152,14 @@
   transition: all 0.3s ease;
 }
 
-/* Green badge for Easy, Pink for Hard. 
-   The first <li> is Easy, second is Hard. */
-
-.game-item:nth-child(1) .small {
+/* Badge colors for difficulty */
+.game-item .small[data-difficulty="easy"] {
   background: linear-gradient(135deg, #4ade80, #22c55e);
   color: white;
   box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
 }
 
-.game-item:nth-child(2) .small {
+.game-item .small[data-difficulty="normal"] {
   background: linear-gradient(135deg, #fb6f92, #ff5a82);
   color: white;
   box-shadow: 0 2px 8px rgba(251, 111, 146, 0.3);
