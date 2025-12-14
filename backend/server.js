@@ -32,6 +32,6 @@ app.get('*', function (_, res) {
     res.sendFile(path.join(frontend_dir, "index.html"));
 });
 
-app.listen(PORT, function() {
+app.listen(process.env.PORT, function() {
     console.log(`Starting server now on ${LOCAL_HOST}:${PORT}...`)
 })

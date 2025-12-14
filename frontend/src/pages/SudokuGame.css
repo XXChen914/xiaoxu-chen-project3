@@ -4,10 +4,14 @@
   align-items: center;
   padding: 20px 16px 30px;
   font-family: Arial, sans-serif;
+  min-height: 100vh;
 }
+
+/* ---------- Header ---------- */
 
 .sudoku-game__header {
   text-align: center;
+  margin-bottom: 8px;
 }
 
 .sudoku-game__title {
@@ -23,21 +27,23 @@
 }
 
 .sudoku-game__timer {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #0066cc;
 }
 
+/* ---------- Completion Banner ---------- */
+
 .sudoku-game__congratulations {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: bold;
-  color: #28a745;
+  color: #155724;
   background-color: #d4edda;
   border: 2px solid #28a745;
   border-radius: 8px;
-  padding: 10px 20px;
-  margin: 8px auto 0;
+  padding: 10px 18px;
+  margin: 10px auto 0;
   animation: sudoku-game-pulse 1s ease-in-out infinite alternate;
 }
 
@@ -50,26 +56,31 @@
   }
 }
 
+/* ---------- Main Layout ---------- */
+
 .sudoku-game__main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 18px;
+  width: 100%;
 }
 
-/* Number pad */
+/* ---------- Number Pad ---------- */
+
 .sudoku-game__number-pad {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  margin-top: 18px;
-  max-width: 400px;
+  margin-top: 8px;
+  max-width: 360px;
 }
 
 .sudoku-game__number-button {
-  width: 45px;
-  height: 45px;
-  font-size: 1.1rem;
+  width: 44px;
+  height: 44px;
+  font-size: 1.05rem;
   font-weight: bold;
   border: 2px solid #0066cc;
   background-color: #fff;
@@ -85,16 +96,16 @@
 }
 
 .sudoku-game__number-button:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .sudoku-game__number-button--clear {
   width: auto;
-  padding: 0 15px;
-  background-color: #f8f8f8;
+  padding: 0 16px;
+  background-color: #f2f2f2;
   border-color: #999;
-  color: #666;
+  color: #555;
 }
 
 .sudoku-game__number-button--clear:hover:not(:disabled) {
@@ -102,13 +113,12 @@
   color: #fff;
 }
 
-/* Controls */
+/* ---------- Controls ---------- */
+
 .sudoku-game__controls {
   display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  flex-wrap: wrap;
   justify-content: center;
+  margin-top: 6px;
 }
 
 .sudoku-game__control-button {
@@ -122,23 +132,21 @@
   color: #fff;
 }
 
-.sudoku-game__control-button--new {
-  background-color: #28a745;
-}
-
-.sudoku-game__control-button--new:hover {
-  background-color: #218838;
-}
-
 .sudoku-game__control-button--reset {
   background-color: #dc3545;
 }
 
-.sudoku-game__control-button--reset:hover {
+.sudoku-game__control-button--reset:hover:not(:disabled) {
   background-color: #c82333;
 }
 
-/* Small screens */
+.sudoku-game__control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Small Screens ---------- */
+
 @media (max-width: 480px) {
   .sudoku-game {
     padding: 16px 10px 24px;
