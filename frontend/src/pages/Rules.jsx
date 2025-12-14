@@ -19,7 +19,7 @@ export default function Rules() {
         </ol>
 
         <h4>Scoring</h4>
-        <p className="small">Scores are based on speed and accuracy.</p>
+        <p className="small">Scores are based on the number of completions.</p>
 
         <h4>Credits</h4>
         <div className="credits">

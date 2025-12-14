@@ -44,15 +44,11 @@ const router = createBrowserRouter([
       },
       {
         path: "rules",
-        element: (
-            <Rules />
-        ),
+        element: <Rules />,
       },
       {
         path: "scores",
-        element: (
-            <Scores />
-        ),
+        element: <Scores />,
       },
       {
         path: "login",
