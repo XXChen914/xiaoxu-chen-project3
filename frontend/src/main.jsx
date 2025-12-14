@@ -28,8 +28,8 @@ const router = createBrowserRouter([
         path: "games",
         element: (
           <RequireAuth>
-                        <SudokuProvider>
-            <Selection />
+            <SudokuProvider>
+              <Selection />
             </SudokuProvider>
           </RequireAuth>
         ),
